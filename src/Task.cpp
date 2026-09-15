@@ -1,6 +1,7 @@
 #include "Task.h"
 #include <sstream>
 #include <algorithm>
+#include <cctype>
 
 std::string priorityToString(Priority p) {
     switch (p) {
@@ -10,11 +11,15 @@ std::string priorityToString(Priority p) {
     }
     return "Medium";
 }
-
 std::optional<Priority> priorityFromString(const std::string& s) {
-    if (s == "Low")    return Priority::Low;
-    if (s == "Medium") return Priority::Medium;
-    if (s == "High")   return Priority::High;
+    std::string lower;
+    lower.reserve(s.size());
+    for (char c : s) {
+        lower += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+    if (lower == "low")    return Priority::Low;
+    if (lower == "medium") return Priority::Medium;
+    if (lower == "high")   return Priority::High;
     return std::nullopt;
 }
 
